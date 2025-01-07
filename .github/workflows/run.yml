@@ -17,10 +17,16 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 22
-      - name: Update npm and install latest github-stats-box
+      - name: Install latest npm and github-stats-box
         run: |
           npm install -g npm@latest
           npm install github-stats-box@latest
+      - name: Fetch stars directly via API
+        run: |
+          curl -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
+          https://api.github.com/users/virtue14/repos?per_page=100 > repos.json
+          TOTAL_STARS=$(jq '[.[] | .stargazers_count] | add' repos.json)
+          echo "TOTAL_STARS=$TOTAL_STARS" >> $GITHUB_ENV
       - name: Run GitHub Stats Box
         run: npx github-stats-box@latest --debug
         env:
@@ -29,4 +35,6 @@ jobs:
           # Edit the following environment variables
           GIST_ID: ${{ secrets.GIST_ID }} # The ID portion from your gist url
           ALL_COMMITS: true # If `true` it will count all commits, if `false` it will count your last year commits
-          K_FORMAT: false # If `true`, large numbers will be formatted with a "k", for example "1
+          K_FORMAT: false # If `true`, large numbers will be formatted with a "k", for example "1.5k"
+      - name: Manual Update Stars
+        run: echo "⭐    Total Stars: $TOTAL_STARS" >> stats.txt
