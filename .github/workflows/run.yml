@@ -17,8 +17,12 @@ jobs:
         uses: actions/setup-node@master
         with:
           node-version: 16
+      - name: Update npm and install latest github-stats-box
+        run: |
+          npm install -g npm@latest
+          npm install github-stats-box@latest
       - name: Run GitHub Stats Box
-        run: npx github-stats-box@1 --debug
+        run: npx github-stats-box@latest --debug
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }} # Do not edit, defined in secrets
 
