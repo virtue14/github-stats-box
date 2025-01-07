@@ -14,9 +14,9 @@ jobs:
       - name: Set timezone to Asia/Seoul
         run: sudo timedatectl set-timezone Asia/Seoul
       - name: Setup Node.js
-        uses: actions/setup-node@master
+        uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 22
       - name: Update npm and install latest github-stats-box
         run: |
           npm install -g npm@latest
@@ -29,4 +29,4 @@ jobs:
           # Edit the following environment variables
           GIST_ID: ${{ secrets.GIST_ID }} # The ID portion from your gist url
           ALL_COMMITS: true # If `true` it will count all commits, if `false` it will count your last year commits
-          K_FORMAT: false # If `true`, large numbers will be formatted with a "k", for example "1.5k"
+          K_FORMAT: false # If `true`, large numbers will be formatted with a "k", for example "1
